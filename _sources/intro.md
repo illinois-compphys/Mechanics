@@ -1,11 +1,12 @@
-# Welcome to your Jupyter Book
+# Mechanics
 
-This is a small sample book to give you a feel for how book content is
-structured.
-It shows off a few of the major file types, as well as some sample content.
-It does not go in-depth into any particular topic - check out [the Jupyter Book documentation](https://jupyterbook.org) for more information.
+<img src="https://clark.physics.illinois.edu/MechanicsBanner.png" alt="EMBanner" >
 
-Check out the content pages bundled with this sample book to see more.
+
+Classical mechanics explores the fundamental principles governing the motion of macroscopic objects and the forces that cause them. Here we will start exploring this using a computational approach. We'll learn how to translate theoretical concepts into working simulations, allowing us to visualize and analyze complex systems that are often more complicated to tackle with purely analytical methods.
+
+We'll focus on using computational tools to investigate the dynamics of the Harmonic oscillators and planetary orbits. You'll gain hands-on experience in numerical integration, modeling, and analyzing your simulation output. We'll explore how to use programming to solve differential equations, visualize your results, and develop a deeper intuition for the physical world.
+
 
 ```{tableofcontents}
 ```

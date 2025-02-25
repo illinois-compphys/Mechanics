@@ -1,0 +1,779 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Harmonic Oscillator &#8212; Mechanics</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+
+  
+  <link href="_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
+  <link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
+<link rel="preload" as="font" type="font/woff2" crossorigin href="_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
+  
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
+  <script src="_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+    <script src="_static/documentation_options.js?v=9eb32ce0"></script>
+    <script src="_static/doctools.js?v=9a2dae69"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/scripts/sphinx-book-theme.js?v=887ef09a"></script>
+    <script>let toggleHintShow = 'Click to show';</script>
+    <script>let toggleHintHide = 'Click to hide';</script>
+    <script>let toggleOpenOnPrint = 'true';</script>
+    <script src="_static/togglebutton.js?v=4a39c7ea"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script src="_static/design-tabs.js?v=f930bc37"></script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
+    <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
+    <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
+    <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+    <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'Classical_Harmonic_Oscillators';</script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Mechanics" href="intro.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-primary-sidebar-checkbox"/>
+  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
+  
+  <input type="checkbox"
+          class="sidebar-toggle"
+          id="pst-secondary-sidebar-checkbox"/>
+  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
+  
+  <div class="search-button__wrapper">
+    <div class="search-button__overlay"></div>
+    <div class="search-button__search-container">
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         id="search-input"
+         placeholder="Search this book..."
+         aria-label="Search this book..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form></div>
+  </div>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <div class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+    
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="intro.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/logo.png" class="logo__image only-light" alt="Mechanics - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Mechanics - Home"/>`);</script>
+  
+  
+</a></div>
+        <div class="sidebar-primary-item">
+
+ <script>
+ document.write(`
+   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span class="search-button__default-text">Search</span>
+    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+   </button>
+ `);
+ </script></div>
+        <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
+    <div class="bd-toc-item navbar-nav active">
+        
+        <ul class="nav bd-sidenav bd-sidenav__home-link">
+            <li class="toctree-l1">
+                <a class="reference internal" href="intro.html">
+                    Mechanics
+                </a>
+            </li>
+        </ul>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Harmonic Oscillator</a></li>
+</ul>
+
+    </div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+  </div>
+  
+  <div id="rtd-footer-container"></div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+
+<div class="sbt-scroll-pixel-helper"></div>
+
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item"><button class="sidebar-toggle primary-toggle btn btn-sm" title="Toggle primary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <span class="fa-solid fa-bars"></span>
+</button></div>
+      
+    </div>
+  
+  
+    <div class="header-article-items__end">
+      
+        <div class="header-article-item">
+
+<div class="article-header-buttons">
+
+
+
+
+
+<div class="dropdown dropdown-source-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Source repositories">
+    <i class="fab fa-github"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="https://github.com/bkclark/Mechanics" target="_blank"
+   class="btn btn-sm btn-source-repository-button dropdown-item"
+   title="Source repository"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fab fa-github"></i>
+  </span>
+<span class="btn__text-container">Repository</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li><a href="https://github.com/bkclark/Mechanics/issues/new?title=Issue%20on%20page%20%2FClassical_Harmonic_Oscillators.html&body=Your%20issue%20content%20here." target="_blank"
+   class="btn btn-sm btn-source-issues-button dropdown-item"
+   title="Open an issue"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-lightbulb"></i>
+  </span>
+<span class="btn__text-container">Open issue</span>
+</a>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+
+
+<div class="dropdown dropdown-download-buttons">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Download this page">
+    <i class="fas fa-download"></i>
+  </button>
+  <ul class="dropdown-menu">
+      
+      
+      
+      <li><a href="_sources/Classical_Harmonic_Oscillators.ipynb" target="_blank"
+   class="btn btn-sm btn-download-source-button dropdown-item"
+   title="Download source file"
+   data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file"></i>
+  </span>
+<span class="btn__text-container">.ipynb</span>
+</a>
+</li>
+      
+      
+      
+      
+      <li>
+<button onclick="window.print()"
+  class="btn btn-sm btn-download-pdf-button dropdown-item"
+  title="Print to PDF"
+  data-bs-placement="left" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-file-pdf"></i>
+  </span>
+<span class="btn__text-container">.pdf</span>
+</button>
+</li>
+      
+  </ul>
+</div>
+
+
+
+
+<button onclick="toggleFullScreen()"
+  class="btn btn-sm btn-fullscreen-button"
+  title="Fullscreen mode"
+  data-bs-placement="bottom" data-bs-toggle="tooltip"
+>
+  
+
+<span class="btn__icon-container">
+  <i class="fas fa-expand"></i>
+  </span>
+
+</button>
+
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
+  </button>
+`);
+</script>
+
+
+<script>
+document.write(`
+  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <i class="fa-solid fa-magnifying-glass fa-lg"></i>
+  </button>
+`);
+</script>
+<button class="sidebar-toggle secondary-toggle btn btn-sm" title="Toggle secondary sidebar" data-bs-placement="bottom" data-bs-toggle="tooltip">
+    <span class="fa-solid fa-list"></span>
+</button>
+</div></div>
+      
+    </div>
+  
+</div>
+</div>
+              
+              
+
+<div id="jb-print-docs-body" class="onlyprint">
+    <h1>Harmonic Oscillator</h1>
+    <!-- Table of contents -->
+    <div id="print-main-content">
+        <div id="jb-print-toc">
+            
+            <div>
+                <h2> Contents </h2>
+            </div>
+            <nav aria-label="Page">
+                <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-a-single-spring">Exercise 1. A Single Spring</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-harmonic-oscillator">a. Simple Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computing-the-energy">b.  Computing the energy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-animating-your-spring">c. Animating your spring</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-a-under-damped-harmonic-oscillator">d.  A (under) damped Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-an-overdamped-oscillator">e.  An overdamped oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-gravity">e. Gravity</a></li>
+</ul>
+</li>
+</ul>
+            </nav>
+        </div>
+    </div>
+</div>
+
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section class="tex2jax_ignore mathjax_ignore" id="harmonic-oscillator">
+<h1>Harmonic Oscillator<a class="headerlink" href="#harmonic-oscillator" title="Link to this heading">#</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">animation</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;scipy&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_spring</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draws a spring between (x0, y0) and (x1, y1).&quot;&quot;&quot;</span>
+    <span class="n">num_points</span><span class="o">=</span><span class="mi">500</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+
+    <span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+    <span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+
+    <span class="n">coil_x</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">coils</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+    <span class="n">coil_y</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">coils</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+    <span class="n">x_spring</span> <span class="o">=</span> <span class="n">x_line</span> <span class="o">+</span> <span class="n">coil_x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">y_spring</span> <span class="o">=</span> <span class="n">y_line</span> <span class="o">+</span> <span class="n">coil_y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x_spring</span><span class="p">,</span> <span class="n">y_spring</span>  <span class="c1"># Return the spring coordinates</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">draw_spring_system</span><span class="p">(</span><span class="n">spring_loc</span><span class="p">):</span>
+    <span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="o">=</span><span class="n">draw_spring</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span><span class="n">spring_loc</span> <span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="n">coils</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.25</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span><span class="n">ys</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">spring_loc</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">axis</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">animate_spring_system</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="o">-</span><span class="mf">2.0</span><span class="p">,</span><span class="o">-</span><span class="mf">2.0</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.25</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>  <span class="c1"># Initialize an empty line object</span>
+
+    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.05</span>
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+    <span class="n">top_val</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="mf">1.1</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="n">top_val</span><span class="p">)</span>    
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>  
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># x-coordinate changes over time</span>
+        <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">draw_spring</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.10</span><span class="p">)</span> 
+        <span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+        <span class="n">circle</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">x1</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">line</span><span class="p">,</span><span class="n">circle</span><span class="p">,</span>
+
+    <span class="n">ani</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span><span class="n">repeat</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> 
+    <span class="c1">###save animation as html</span>
+    <span class="c1">#ani.save(&#39;spring_system.html&#39;, writer=&#39;html&#39;)</span>
+    <span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">ani</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">()))</span>  
+    <span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+</pre></div>
+</div>
+</div>
+</div>
+<p>Our goal in this assignment is to understand the Harmonic Oscillator</p>
+<section id="exercise-1-a-single-spring">
+<h2>Exercise 1. A Single Spring<a class="headerlink" href="#exercise-1-a-single-spring" title="Link to this heading">#</a></h2>
+<section id="a-simple-harmonic-oscillator">
+<h3>a. Simple Harmonic Oscillator<a class="headerlink" href="#a-simple-harmonic-oscillator" title="Link to this heading">#</a></h3>
+<p>We will be working with a simple Harmonic oscillator in this part.  For the moment, we should think of this as a spring connected to a wall with a mass <span class="math notranslate nohighlight">\(m\)</span> on the end.  We will work with the natural equilibrium length of the spring to be 2 and let the x-coordinate at the equilbrium length to be <span class="math notranslate nohighlight">\(x=0\)</span> (so the deviation from the equilibrium and the x-coordinate match up).  To draw this spring go ahead an plot</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">draw_spring_system</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>where the 0 represents that it is at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (start)"></img><br></div><p>The relevant differential equation for the simple Harmonic oscillator is</p>
+<div class="math notranslate nohighlight">
+\[
+m \ddot{x} = -k x
+\]</div>
+<p>again where <span class="math notranslate nohighlight">\(x\)</span> represents the amount the spring is displaced away from its equilibrium position.</p>
+<p>To solve this with python, it will be convenient to instead write it out as two first-order equations,</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\dot{x} = v \\
+\dot{v} = -\frac{k}{m} x
+\end{split}\]</div>
+<p>where <span class="math notranslate nohighlight">\(v\)</span> is the velocity of the mass.</p>
+<p>These equations can be directly translated into python:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">equations</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+  <span class="n">x</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
+  <span class="n">x_dot</span> <span class="o">=</span><span class="n">v</span>
+  <span class="n">v_dot</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">m</span><span class="o">*</span><span class="n">x</span>
+  <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span><span class="n">v_dot</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We can now get python to solve this differential equation for us.   We need to give it some initial conditions.  For example, we can stretch the spring out to <span class="math notranslate nohighlight">\(x=1\)</span> and set the initial velocity to <span class="math notranslate nohighlight">\(v=0\)</span> by doing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Then we need to specify which times <span class="math notranslate nohighlight">\(t\)</span> we want to evaluate our differential equation with respect to.  Here let’s choose a grid of 400 time points between 0 and <span class="math notranslate nohighlight">\(16\pi\)</span> as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Finally, we need to pick some values for</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">=</span><span class="mf">1.3</span>
+<span class="n">m</span><span class="o">=</span><span class="mf">2.25</span>
+</pre></div>
+</div>
+<p>Now we can solve our differential equation doing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">equations</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">v</span><span class="o">=</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Go ahead and solve this differential equation and plot it</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="c1">#&lt;-- This is the important line which plots.</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;x(t)&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Notice that your wave-length <span class="math notranslate nohighlight">\(\lambda = \frac{2\pi}{\omega}\)</span> where the natural frequency <span class="math notranslate nohighlight">\(\omega = \sqrt{k/m}\)</span>.</p>
+<p>Also go ahead and plot the velocity. You can plot it separately or if you want to plot it on the same figure so you can match the velocity and time before the <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code> go ahead and do</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>  
+<span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>  <span class="c1">#&lt;--- you can turn up the alpha if it&#39;s too dim but I find it annoying to have them both be strong  </span>
+<span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;v(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> 
+<span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> 
+</pre></div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="b-computing-the-energy">
+<h3>b.  Computing the energy<a class="headerlink" href="#b-computing-the-energy" title="Link to this heading">#</a></h3>
+<p>We would now like to compute the energy</p>
+<div class="math notranslate nohighlight">
+\[
+E = \frac{1}{2}mv^2 + \frac{1}{2}kx^2
+\]</div>
+<p>of your system and show that it is constant.  It helps if you keep your y-limit from zero to one - i.e. <code class="docutils literal notranslate"><span class="pre">ax1.set_ylim(0,1)</span></code>.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="c-animating-your-spring">
+<h3>c. Animating your spring<a class="headerlink" href="#c-animating-your-spring" title="Link to this heading">#</a></h3>
+<p>We now want to animate your spring.  You can do this by calling</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">animate_spring_system</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>on your x-coordinate.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="d-a-under-damped-harmonic-oscillator">
+<h3>d.  A (under) damped Harmonic Oscillator<a class="headerlink" href="#d-a-under-damped-harmonic-oscillator" title="Link to this heading">#</a></h3>
+<p>Now let’s go ahead and introduce some damping.  The equation of motion for a damped harmonic oscillator is</p>
+<div class="math notranslate nohighlight">
+\[
+m \ddot{x} = -k x - c v 
+\]</div>
+<p>Rewrite this out as a series of first-order differential equations and then modify your <code class="docutils literal notranslate"><span class="pre">equations(state,t,x,k,m,c)</span></code> function to solve this differential equation using the same starting conditions and values for <span class="math notranslate nohighlight">\(k\)</span> amd <span class="math notranslate nohighlight">\(m\)</span> as earlier. Start by using <span class="math notranslate nohighlight">\(c=0.2\)</span>.   Recall that the dissipation <span class="math notranslate nohighlight">\(\gamma=c/(2m\omega)\)</span>.  Since <span class="math notranslate nohighlight">\(\gamma&lt;1\)</span> this is the underdamped case.</p>
+<p>Plot the position and velocity as a function of time.  Also animate your spring.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>We would like to now check two things explicitly about the damped oscillator:</p>
+<p>We expect that the wave-length of the damped oscillator should be <span class="math notranslate nohighlight">\(2\pi/\omega_d\)</span> where <span class="math notranslate nohighlight">\(\omega_d \equiv \omega_n \sqrt{1-\gamma^2}\)</span>.  How much different is this from the natural frequency.   Verify this by extracting the peak locations of the undamped oscillator.  To do this we can use <code class="docutils literal notranslate"><span class="pre">my_peaks=find_peaks(x)[0].tolist()</span></code> and then use <code class="docutils literal notranslate"><span class="pre">t[my_peaks]</span></code> to get the time of the respective peaks.  Check that those times are all equidistance and that they happen at the prescribed wave-length.  The answer you will actually get if you do this will be reasonable but not super-accurate.  You can do better by (a) increasing the number of points in your <code class="docutils literal notranslate"><span class="pre">linspace</span></code> to 4000 (but don’t rerun the animation becuase it will be very slow) and/or instead of using the difference in time between two peaks computing the slope <code class="docutils literal notranslate"><span class="pre">np.polyfit(range(0,len(peaks)),t[peaks],1)</span></code> and getting the slope.</p>
+<p>Verify that the damped oscillator’s strength decays exponentially.  We can do this by looking at the peak values (<code class="docutils literal notranslate"><span class="pre">x[my_peaks]</span></code>) and plot them.  To tell that something decreases exponentially, you should plot it on a semi-log scale (<code class="docutils literal notranslate"><span class="pre">ax1.set_yscale('log')</span></code>) and see that the plot is linear.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="e-an-overdamped-oscillator">
+<h3>e.  An overdamped oscillator<a class="headerlink" href="#e-an-overdamped-oscillator" title="Link to this heading">#</a></h3>
+<p>Let’s do the same thing but this time choose a value of <span class="math notranslate nohighlight">\(c\)</span> where <span class="math notranslate nohighlight">\(\gamma &gt;1\)</span> and hence it is overdamped. Then consider some value where <span class="math notranslate nohighlight">\(\gamma \gg 1\)</span>.  For both scenarios plot the position and velocity vs time and animate them.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="e-gravity">
+<h3>e. Gravity<a class="headerlink" href="#e-gravity" title="Link to this heading">#</a></h3>
+<p>We would now like you to modify your equations of motion to include both the force from gravity and a dissapation term.  By running your simulation, compute the equilibrium value for masses <code class="docutils literal notranslate"><span class="pre">masses=[1.0,2.0,3.0,4.0]</span></code>.  Then plot the equilibrium spring location versus the mass and show that the equilbrium position is linear with the mass.  How could you then use this information as a scale?</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+</section>
+</section>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            name: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+                </article>
+              
+
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="intro.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Mechanics</p>
+      </div>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <div class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+  <div class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> Contents
+  </div>
+  <nav class="bd-toc-nav page-toc">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-a-single-spring">Exercise 1. A Single Spring</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-harmonic-oscillator">a. Simple Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computing-the-energy">b.  Computing the energy</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-animating-your-spring">c. Animating your spring</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-a-under-damped-harmonic-oscillator">d.  A (under) damped Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-an-overdamped-oscillator">e.  An overdamped oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-gravity">e. Gravity</a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+<div class="bd-footer-content__inner container">
+  
+  <div class="footer-item">
+    
+<p class="component-author">
+By Bryan Clark
+</p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+
+  <p class="copyright">
+    
+      © Copyright 2024.
+      <br/>
+    
+  </p>
+
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+  <div class="footer-item">
+    
+  </div>
+  
+</div>
+          </footer>
+        
+
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script src="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
+<script src="_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+
+  <footer class="bd-footer">
+  </footer>
+  </body>
+</html>
