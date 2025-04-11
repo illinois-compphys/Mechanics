@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Two Springs and Harmonic Forcing &#8212; Mechanics</title>
+    <title>Two Springs and Forcing &#8212; Mechanics</title>
   
   
   
@@ -182,7 +182,7 @@
         </ul>
         <ul class="current nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="Classical_Harmonic_Oscillators.html">Harmonic Oscillator</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">Two Springs and Harmonic Forcing</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Two Springs and Forcing</a></li>
 </ul>
 
     </div>
@@ -352,7 +352,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Two Springs and Harmonic Forcing</h1>
+    <h1>Two Springs and Forcing</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -371,9 +371,18 @@ document.write(`
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-linear-combination-of-periodic-forcing">Exercise 2.  Linear Combination of Periodic Forcing</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-harmonic-forces">a.  Two Harmonic Forces</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-superposition-of-two-harmonic-forces">b. Superposition of Two Harmonic Forces.</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-harmonic-forces-giving-a-square-wave">c. Harmonic Forces Giving a Square Wave</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-getting-x-t-from-many-harmonic-forces">d.  Getting <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-linear-combination-of-delta-function-forcing">Exercise 3.  Linear Combination of Delta Function Forcing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-delta-function">a.  Delta Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-linear-combination-of-delta-functions">b.  Linear Combination of Delta Functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-square-well">Exercise 4.  Square Well</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-square-well-forcing-function">a.  The square well forcing function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-fourier-transform-of-square-wave">b.  Fourier transform of square wave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-generating-x-t-from-many-harmonic-forces">c.  Generating <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-generate-x-t-from-many-delta-functions">d. Generate <span class="math notranslate nohighlight">\(x(t)\)</span> from many delta functions</a></li>
 </ul>
 </li>
 </ul>
@@ -387,12 +396,12 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="two-springs-and-harmonic-forcing">
-<h1>Two Springs and Harmonic Forcing<a class="headerlink" href="#two-springs-and-harmonic-forcing" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="two-springs-and-forcing">
+<h1>Two Springs and Forcing<a class="headerlink" href="#two-springs-and-forcing" title="Link to this heading">#</a></h1>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="c1">#from scipy.integrate import odeint</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
@@ -413,11 +422,12 @@ document.write(`
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
+<span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">3</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="c1">#from scipy.integrate import odeint</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
 
 <span class="ne">ModuleNotFoundError</span>: No module named &#39;scipy&#39;
 </pre></div>
@@ -714,58 +724,24 @@ P_\textrm{in} =  Fv
 <h2>Exercise 2.  Linear Combination of Periodic Forcing<a class="headerlink" href="#exercise-2-linear-combination-of-periodic-forcing" title="Link to this heading">#</a></h2>
 <section id="a-two-harmonic-forces">
 <h3>a.  Two Harmonic Forces<a class="headerlink" href="#a-two-harmonic-forces" title="Link to this heading">#</a></h3>
-<p>In this exercise, we’d like to understand what happens if we apply a driving force which is a sum of multiple Harmonic forces.</p>
-<p>First, let’s modify the <code class="docutils literal notranslate"><span class="pre">SHOParams</span></code> to take a list of <code class="docutils literal notranslate"><span class="pre">DisplaceParams</span></code> - i.e.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SHOParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot;A docstring&quot;&quot;&quot;</span>
-  <span class="n">k</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">kp</span><span class="p">:</span> <span class="nb">float</span>
-  <span class="n">D</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="n">DisplaceParams</span><span class="p">]</span>  
-  <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
-  <span class="n">initial_state</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
-</pre></div>
-</div>
-<p>Now, modify your <code class="docutils literal notranslate"><span class="pre">equations(t,</span> <span class="pre">state,</span> <span class="pre">shoParams)</span></code> to use a displacement that is the sum of the Harmonic forces (including allowing the DisplaceParams to have a offset <span class="math notranslate nohighlight">\(\phi\)</span>)</p>
-<p>We will use initial conditions as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">displace1</span><span class="o">=</span> <span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="mf">0.25</span><span class="p">)</span>
-<span class="n">displace2</span><span class="o">=</span> <span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mf">0.1</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span><span class="n">phi</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
-<span class="n">displaceParams</span><span class="o">=</span> <span class="p">[</span><span class="n">displace1</span><span class="p">,</span><span class="n">displace2</span><span class="p">]</span>
-<span class="n">params</span> <span class="o">=</span> <span class="n">SHOParams</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">kp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">displaceParams</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
-</pre></div>
-</div>
-<p>giving us a displacement of
-$<span class="math notranslate nohighlight">\( 
-Y(t) = 4 \cos(2\pi (0.25) t) + 8 \cos( (2\pi) 0.1  t + 1.0)
-\)</span>$</p>
-<p>Continue using <code class="docutils literal notranslate"><span class="pre">t=</span> <span class="pre">np.linspace(0,</span> <span class="pre">20,</span> <span class="pre">10000)</span></code></p>
-<p>Go ahead and plot <span class="math notranslate nohighlight">\(Y(t)\)</span> and <span class="math notranslate nohighlight">\(x(t)\)</span>.</p>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
-</pre></div>
-</div>
-</div>
-</div>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
-<section id="b-superposition-of-two-harmonic-forces">
-<h3>b. Superposition of Two Harmonic Forces.<a class="headerlink" href="#b-superposition-of-two-harmonic-forces" title="Link to this heading">#</a></h3>
-<p>In this section, we are going to separately solve two different Harmonic oscillators for two different forces:</p>
-<p><strong>Problem 0</strong>
-<span class="math notranslate nohighlight">\(F(t) =Y(t) = 4 \cos(2\pi (0.25) t) \)</span></p>
-<p>Initial Conditions: [0.3,0.6]</p>
-<p><strong>Problem 1</strong>
-<span class="math notranslate nohighlight">\(F(t) = + 8 \cos( (2\pi) 0.1  t + 1.0) \)</span></p>
-<p>Initial Conditions: [0.7,0.4]</p>
-<hr class="docutils" />
-<p>Notice that the sum of the forces are the force that we had in the previous problem and the sum of the initial conditions are the initial conditions that we had in the previous problem.</p>
-<p>Solve for <span class="math notranslate nohighlight">\(x_0(t)\)</span> and <span class="math notranslate nohighlight">\(x_1(t)\)</span> seperately and plot</p>
+<p>In this exercise, we’d like to understand what happens if we apply a driving force which is a sum of multiple Harmonic forces - i.e.</p>
+<div class="math notranslate nohighlight">
+\[
+Y(t) = Y_1(t) + Y_2(t)
+\]</div>
+<p>with an initial condition of <span class="math notranslate nohighlight">\(x=1.0; v=1.0\)</span></p>
+<p>We will let</p>
 <ul class="simple">
-<li><p><span class="math notranslate nohighlight">\(x_0(t)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(x_1(t)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(x_0(t) + x_1(t)\)</span></p></li>
-<li><p><span class="math notranslate nohighlight">\(x(t)\)</span> from above</p></li>
+<li><p><span class="math notranslate nohighlight">\(Y_1(t) =  4 \cos (2\pi (0.25) t)\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Y_2(t) =  8 \cos (2\pi (0.1) t + 1.0)\)</span></p></li>
 </ul>
+<p>To solve for <span class="math notranslate nohighlight">\(x(t)\)</span>, we can separately solve for <span class="math notranslate nohighlight">\(x_1(t)\)</span> (with Harmonic force <span class="math notranslate nohighlight">\(Y_1(t)\)</span>) and <span class="math notranslate nohighlight">\(x_2(t)\)</span> (with Harmonic force <span class="math notranslate nohighlight">\(Y_2(t)\)</span>) and add them together to get <span class="math notranslate nohighlight">\(x(t)=x_1(t) +x_2(t)\)</span>.  When we do this, we need to be careful about our initial conditions:  the sum of the initial conditions for <span class="math notranslate nohighlight">\(x_1(t)\)</span> and <span class="math notranslate nohighlight">\(x_2(t)\)</span> must be equal to the initial conditions for <span class="math notranslate nohighlight">\(x(t)\)</span>.  Let’s let our initial conditions be <span class="math notranslate nohighlight">\([0.3,0.6]\)</span> and <span class="math notranslate nohighlight">\([0.7,0.4]\)</span> respectively.</p>
+<p>For the other parameters, continue using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">SHOParams</span><span class="p">(</span><span class="n">k</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">kp</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">D</span><span class="o">=...</span><span class="p">,</span> <span class="n">initial_state</span><span class="o">=...</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>with times  <code class="docutils literal notranslate"><span class="pre">t=</span> <span class="pre">np.linspace(0,</span> <span class="pre">20,</span> <span class="pre">10000)</span></code></p>
+<p>Solve for and plot <span class="math notranslate nohighlight">\(x_1(t)\)</span>, <span class="math notranslate nohighlight">\(x_2(t)\)</span> and <span class="math notranslate nohighlight">\(x(t)\)</span>.  Your answer should look like ….</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
@@ -773,7 +749,19 @@ Y(t) = 4 \cos(2\pi (0.25) t) + 8 \cos( (2\pi) 0.1  t + 1.0)
 </div>
 </div>
 </div>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Suppose we had the curve <code class="docutils literal notranslate"><span class="pre">D_t=GetDisplacement(params1.D[0],</span> <span class="pre">t)+GetDisplacement(params2.D[1],</span> <span class="pre">t)</span></code> but we didn’t know what frequencies it came from.  Also suppose that we had code that only solved for a single Harmonic frequency <code class="docutils literal notranslate"><span class="pre">Y_0</span> <span class="pre">cos(omega</span> <span class="pre">t</span> <span class="pre">+</span> <span class="pre">phi)</span></code>. In such a case, we would have needed to decompose our curve into a bunch of different cosines.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Suppose we just had the curve</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1">### &lt;-- you don&#39;t get to see this next line. Someone just hands you D_t</span>
+<span class="n">D_t</span><span class="o">=</span><span class="n">GetDisplacement</span><span class="p">(</span><span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mf">0.25</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span><span class="o">+</span><span class="n">GetDisplacement</span><span class="p">(</span><span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mf">0.1</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">phi</span><span class="o">=</span><span class="mf">1.0</span><span class="p">),</span> <span class="n">t</span><span class="p">)</span>  
+<span class="c1">###</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">D_t</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>on a plot but we didn’t know what frequencies it came from.</p>
+<p>In order to solve for the frequency <span class="math notranslate nohighlight">\(x(t)\)</span> using our previous techniques, we would need to decompose our displacement <span class="math notranslate nohighlight">\(Y(t)\)</span> into a linear combination of cosines with different frequences and phi. - i.e.
+$<span class="math notranslate nohighlight">\(
+Y(t) = \sum_i Y_{0,i} \cos (\omega_i t + \phi_i )
+\)</span>$</p>
 <p>We can do this using a FFT.  Let’s call</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fft_freqs</span><span class="o">=</span><span class="n">fftfreq</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">D_t</span><span class="p">),</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">-</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="n">the_fft</span><span class="o">=</span><span class="n">fft</span><span class="p">(</span><span class="n">D_t</span><span class="p">)</span>
@@ -813,15 +801,114 @@ Y(t) = 4 \cos(2\pi (0.25) t) + 8 \cos( (2\pi) 0.1  t + 1.0)
 \]</div>
 <p>This is what was expected given what we put in.</p>
 </section>
-<section id="c-harmonic-forces-giving-a-square-wave">
-<h3>c. Harmonic Forces Giving a Square Wave<a class="headerlink" href="#c-harmonic-forces-giving-a-square-wave" title="Link to this heading">#</a></h3>
-<p>Let’s now take an example of a curve that is the sum of many harmonic forces.  Let us consider a square wave generated as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">GetSquareWave</span><span class="p">():</span>
+</section>
+<section id="exercise-3-linear-combination-of-delta-function-forcing">
+<h2>Exercise 3.  Linear Combination of Delta Function Forcing<a class="headerlink" href="#exercise-3-linear-combination-of-delta-function-forcing" title="Link to this heading">#</a></h2>
+<p>In the previous problem we decomposed our signal into a sum of Harmonic signals.  In this problem we are going to decompose our solution into a sum of (almost) delta functions.</p>
+<section id="a-delta-function">
+<h3>a.  Delta Function<a class="headerlink" href="#a-delta-function" title="Link to this heading">#</a></h3>
+<p>First, similar to <code class="docutils literal notranslate"><span class="pre">DisplaceParams</span></code> let us define a <code class="docutils literal notranslate"><span class="pre">DeltaParams</span></code> as</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DeltaParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;A docstring&quot;&quot;&quot;</span>
+  <span class="n">Y0</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">t1</span><span class="p">:</span> <span class="nb">float</span> 
+  <span class="n">t2</span><span class="p">:</span> <span class="nb">float</span>
+</pre></div>
+</div>
+<p>which creates a impulse of height <span class="math notranslate nohighlight">\(Y_0\)</span> for times <span class="math notranslate nohighlight">\(t_1 &lt; t &lt; t_2\)</span>.</p>
+<p>Then we can create another parameter class</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">SHOParams_delta</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;A docstring&quot;&quot;&quot;</span>
+  <span class="n">k</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">kp</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">D</span><span class="p">:</span> <span class="n">DeltaParams</span>
+  <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+  <span class="n">initial_state</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>which is similar to our last class but takes a <code class="docutils literal notranslate"><span class="pre">DeltaParams</span></code>.</p>
+<p>Now modify <code class="docutils literal notranslate"><span class="pre">equations(t,</span> <span class="pre">state,</span> <span class="pre">shoParams)</span></code> to instead implement the first order differential equations using this “delta function” <span class="math notranslate nohighlight">\(Y(t)\)</span>.</p>
+<p>Defining <span class="math notranslate nohighlight">\(dt=0.1\)</span>, let us compute <span class="math notranslate nohighlight">\(x(t)\)</span> for a potential with <span class="math notranslate nohighlight">\(Y_0 =1/dt\)</span> and <span class="math notranslate nohighlight">\(0&lt;t&lt;dt\)</span> on a set of <code class="docutils literal notranslate"><span class="pre">t=np.arange(0,20,dt)</span></code>.   For technical reasons, we need to add a <code class="docutils literal notranslate"><span class="pre">max_step</span></code> parameter to our <code class="docutils literal notranslate"><span class="pre">solve_ivp</span></code> function - i.e.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">equations</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">params</span><span class="o">.</span><span class="n">initial_state</span><span class="p">,</span> <span class="n">t_eval</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">,),</span><span class="n">max_step</span><span class="o">=</span><span class="n">dt</span><span class="o">/</span><span class="mf">10.</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Recall that we know the delta function potential should give a</p>
+<div class="math notranslate nohighlight">
+\[ 
+G(\omega)= \exp\left(\frac{-ct}{2m}\right) \frac{\sin(\omega_d t)}{m\omega_d}
+\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[
+\omega_d = \omega_0 \sqrt{1-\zeta^2}
+\]</div>
+<p>Plot this on top of your differential equation solution and show that they largely agree.</p>
+<p><em>Note:</em> After you use <span class="math notranslate nohighlight">\(dt=0.2\)</span> you can rerun this exercise with <span class="math notranslate nohighlight">\(dt=0.1\)</span> and it will look somewhat better but I think the <span class="math notranslate nohighlight">\(dt=0.2\)</span> let’s you see what’s going on a little better when you decomose your forcing function.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now let’s go ahead and instead put a delta function impulse at <span class="math notranslate nohighlight">\(t=10\)</span>.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="b-linear-combination-of-delta-functions">
+<h3>b.  Linear Combination of Delta Functions<a class="headerlink" href="#b-linear-combination-of-delta-functions" title="Link to this heading">#</a></h3>
+<p>Now we want to write <span class="math notranslate nohighlight">\(D_t\)</span> as a linear combination of these <span class="math notranslate nohighlight">\(\delta\)</span> functions. To do this, we will generate a list <code class="docutils literal notranslate"><span class="pre">D</span></code> of DeltaParams so that for every time</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Y_0</span> <span class="pre">=</span> <span class="pre">D_t(t)</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t_1</span> <span class="pre">=</span> <span class="pre">t</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">t_2</span> <span class="pre">=</span> <span class="pre">t+dt</span></code></p></li>
+</ul>
+<p>Check that this produced the correct thing by plotting the discretized version below.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">PlotD</span><span class="p">(</span><span class="n">D</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">d</span> <span class="ow">in</span> <span class="n">D</span><span class="p">:</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">d</span><span class="o">.</span><span class="n">t1</span><span class="p">,</span> <span class="n">d</span><span class="o">.</span><span class="n">Y0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="n">d</span><span class="o">.</span><span class="n">t2</span> <span class="o">-</span> <span class="n">d</span><span class="o">.</span><span class="n">t1</span><span class="p">,</span> <span class="n">align</span><span class="o">=</span><span class="s1">&#39;edge&#39;</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s2">&quot;Y(t)&quot;</span><span class="p">)</span>
+    <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">D_t</span><span class="p">)</span>
+<span class="n">PlotD</span><span class="p">(</span><span class="n">D</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now we want to go ahead and generate a <span class="math notranslate nohighlight">\(x_i(t)\)</span> for every forcing function in the list separately and then let <span class="math notranslate nohighlight">\(x(t) = \sum_i x_i(t)\)</span>.  You need the initial conditions of all of your terms to sum to the initial conditions for <span class="math notranslate nohighlight">\(x(t)\)</span> (i.e. [1,1]);  I think the easiest way to do this is to make the first term have these initial conditions and the other to have <span class="math notranslate nohighlight">\([0,0]\)</span>.  Go ahead and compute all the <span class="math notranslate nohighlight">\(x_i(t)\)</span>  and plot them to give <span class="math notranslate nohighlight">\(x(t)\)</span>.  Check that the <span class="math notranslate nohighlight">\(x(t)\)</span> that you get out is the same <span class="math notranslate nohighlight">\(x(t)\)</span> when you decomposed it into periodic forcing functions.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+</section>
+<section id="exercise-4-square-well">
+<h2>Exercise 4.  Square Well<a class="headerlink" href="#exercise-4-square-well" title="Link to this heading">#</a></h2>
+<p>In this exercise, we are going to work with a square well potential. We will see how both to decompose it into a series of periodic forcing functions as well as delta function forcing functions.</p>
+<section id="a-the-square-well-forcing-function">
+<h3>a.  The square well forcing function<a class="headerlink" href="#a-the-square-well-forcing-function" title="Link to this heading">#</a></h3>
+<p>We will generate our square well using</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">GetSquareWave</span><span class="p">(</span><span class="n">sampling_rate</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span><span class="n">frequency</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span><span class="n">duration</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
     <span class="c1"># Parameters</span>
-    <span class="n">frequency</span> <span class="o">=</span>   <span class="mf">0.2</span>  <span class="c1"># Frequency in Hz</span>
+    <span class="c1">#frequency =   0.2  # Frequency in Hz</span>
     <span class="n">amplitude</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="n">duration</span> <span class="o">=</span> <span class="mi">20</span>  <span class="c1"># Duration in seconds</span>
-    <span class="n">sampling_rate</span> <span class="o">=</span> <span class="mi">500</span>  <span class="c1"># Samples per second</span>
+    <span class="c1">#duration = 20 # Duration in seconds</span>
+    <span class="c1">#sampling_rate = 500  # Samples per second</span>
     <span class="n">duty_cycle</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="c1"># Duty cycle (0 to 1)</span>
 
     <span class="c1"># Time vector</span>
@@ -830,9 +917,10 @@ Y(t) = 4 \cos(2\pi (0.25) t) + 8 \cos( (2\pi) 0.1  t + 1.0)
     <span class="c1"># Generate the square wave</span>
     <span class="n">square_wave</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">signal</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="n">frequency</span> <span class="o">*</span> <span class="n">t</span><span class="p">,</span> <span class="n">duty</span><span class="o">=</span><span class="n">duty_cycle</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">square_wave</span><span class="p">,</span><span class="n">t</span>
+
 </pre></div>
 </div>
-<p>Go ahead and generate your square wave and plot it over time.</p>
+<p>Generate a square wave potential <span class="math notranslate nohighlight">\(D_t\)</span> and plot it over time.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
@@ -840,7 +928,15 @@ Y(t) = 4 \cos(2\pi (0.25) t) + 8 \cos( (2\pi) 0.1  t + 1.0)
 </div>
 </div>
 </div>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now we’d like to take the fourier transform of the square wave.  Go ahead and do this and plot both the absolute value and angle.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="b-fourier-transform-of-square-wave">
+<h3>b.  Fourier transform of square wave<a class="headerlink" href="#b-fourier-transform-of-square-wave" title="Link to this heading">#</a></h3>
+<p>Now we’d like to take the fourier transform of the square wave.  This can be done in the same way that you took the fourier transform of your sum of Harmonic forces above. This time, though, instead of just getting two frequencies, you should expect to get many frequencies.  Go ahead and do this and plot both the absolute value and angle.  When plotting the angle it might help to mask it by doing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mask</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">the_fft</span><span class="p">)</span><span class="o">&gt;</span><span class="mf">1e-5</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">the_fft</span><span class="p">)))</span>   
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">fft_freqs</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span><span class="n">np</span><span class="o">.</span><span class="n">angle</span><span class="p">(</span><span class="n">the_fft</span><span class="p">[</span><span class="n">mask</span><span class="p">]),</span><span class="s1">&#39;o&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This just ensures that it doesn’t plot angles (which are poorly defined) for values of the fft that are essentially zero.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_anaswer-cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
@@ -872,10 +968,9 @@ A \exp[2\pi i \times f] = |A|/N \cos(2\pi f + arg(A))  +  |A|/N i \sin (...)
 </div>
 </div>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
-<section id="d-getting-x-t-from-many-harmonic-forces">
-<h3>d.  Getting <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces<a class="headerlink" href="#d-getting-x-t-from-many-harmonic-forces" title="Link to this heading">#</a></h3>
-<p>At this point, we now have a list of Harmonic displacements.  We will now generate the value of <span class="math notranslate nohighlight">\(x(t)\)</span> in three ways.</p>
-<p>First, our <code class="docutils literal notranslate"><span class="pre">equations</span></code> function will just take the entire list of displacements.  Go ahead and do that and compute <span class="math notranslate nohighlight">\(x(t)\)</span></p>
+<section id="c-generating-x-t-from-many-harmonic-forces">
+<h3>c.  Generating <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces<a class="headerlink" href="#c-generating-x-t-from-many-harmonic-forces" title="Link to this heading">#</a></h3>
+<p>At this point, we now have a list of Harmonic displacements. We now want to generate <span class="math notranslate nohighlight">\(x(t)=\sum_i x_i(t)\)</span> by solving the differential equation for each Harmonic forcing cosine function independently. Remember you need the initial conditions of all of your terms to sum to the initial conditions for <span class="math notranslate nohighlight">\(x(t)\)</span> (i.e. [1,1].) Also remember to use <code class="docutils literal notranslate"><span class="pre">SHOParams</span></code> and not <code class="docutils literal notranslate"><span class="pre">SHOParams_delta</span></code> and to use the <code class="docutils literal notranslate"><span class="pre">equations</span></code> for the Harmonic displacement.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
@@ -883,7 +978,18 @@ A \exp[2\pi i \times f] = |A|/N \cos(2\pi f + arg(A))  +  |A|/N i \sin (...)
 </div>
 </div>
 </div>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now  let’s do it slightly differently.  Let’s compute an <span class="math notranslate nohighlight">\(x(t)\)</span> for each Harmonic displacement - i.e. when you call <code class="docutils literal notranslate"><span class="pre">equations</span></code> it should have only one term in the list  Then solve for each of these and sum them up to generate <span class="math notranslate nohighlight">\(x(t)\)</span>.  There is one important detail here.  You need the initial conditions to sum to <code class="docutils literal notranslate"><span class="pre">[1,1]</span></code>.  I suggest doing this by taking the first one to have that initial condition and all the others to be <code class="docutils literal notranslate"><span class="pre">[0,0]</span></code></p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="d-generate-x-t-from-many-delta-functions">
+<h3>d. Generate <span class="math notranslate nohighlight">\(x(t)\)</span> from many delta functions<a class="headerlink" href="#d-generate-x-t-from-many-delta-functions" title="Link to this heading">#</a></h3>
+<p>Now instead of decomposing our square wave into a sum of Harmonic waves, let’s instead decompose it into a sum of delta functions.  Do this</p>
+<ul class="simple">
+<li><p>Decomposing it into a sum of delta functions</p></li>
+<li><p>Plotting your decomposition as a bunch of bars like you did above</p></li>
+<li><p>Then computing <span class="math notranslate nohighlight">\(x_i(t)\)</span> for each of these delta functions</p></li>
+<li><p>Sum them up to make <span class="math notranslate nohighlight">\(x(t)=\sum_i x_i(t)\)</span></p></li>
+</ul>
+<p>You should get the same results as in (c)</p>
+<p>Make sure you use <code class="docutils literal notranslate"><span class="pre">max_step/10</span></code> in your <code class="docutils literal notranslate"><span class="pre">sol_ivp</span></code> and you are using the appropriate parameters and equations for delta functions.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
@@ -959,9 +1065,18 @@ A \exp[2\pi i \times f] = |A|/N \cos(2\pi f + arg(A))  +  |A|/N i \sin (...)
 </li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-linear-combination-of-periodic-forcing">Exercise 2.  Linear Combination of Periodic Forcing</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-two-harmonic-forces">a.  Two Harmonic Forces</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-superposition-of-two-harmonic-forces">b. Superposition of Two Harmonic Forces.</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-harmonic-forces-giving-a-square-wave">c. Harmonic Forces Giving a Square Wave</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-getting-x-t-from-many-harmonic-forces">d.  Getting <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-3-linear-combination-of-delta-function-forcing">Exercise 3.  Linear Combination of Delta Function Forcing</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-delta-function">a.  Delta Function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-linear-combination-of-delta-functions">b.  Linear Combination of Delta Functions</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-4-square-well">Exercise 4.  Square Well</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-the-square-well-forcing-function">a.  The square well forcing function</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-fourier-transform-of-square-wave">b.  Fourier transform of square wave</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-generating-x-t-from-many-harmonic-forces">c.  Generating <span class="math notranslate nohighlight">\(x(t)\)</span> from many Harmonic Forces</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-generate-x-t-from-many-delta-functions">d. Generate <span class="math notranslate nohighlight">\(x(t)\)</span> from many delta functions</a></li>
 </ul>
 </li>
 </ul>
