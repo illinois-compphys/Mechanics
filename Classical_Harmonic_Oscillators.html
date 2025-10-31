@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=13237357" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -363,13 +363,22 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-imports">Basic Imports:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#animation-functions">Animation Functions:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-a-single-spring">Exercise 1. A Single Spring</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-harmonic-oscillator">a. Simple Harmonic Oscillator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computing-the-energy">b.  Computing the energy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-animating-your-spring">c. Animating your spring</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-a-under-damped-harmonic-oscillator">d.  A (under) damped Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-an-underdamped-harmonic-oscillator">d.  An underdamped Harmonic Oscillator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-an-overdamped-oscillator">e.  An overdamped oscillator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-gravity">e. Gravity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-gravity">f. Gravity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-two-springs">Exercise 2. Two springs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-equation-of-motion-for-forced-displacement">a.  Equation of motion for forced displacement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-damping">b.  Damping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-green-s-function-g-omega">c. Green’s Function <span class="math notranslate nohighlight">\(G(\omega)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-power-flow-in-the-steady-state">d.  Power Flow in the Steady State</a></li>
 </ul>
 </li>
 </ul>
@@ -385,29 +394,34 @@ document.write(`
                   
   <section class="tex2jax_ignore mathjax_ignore" id="harmonic-oscillator">
 <h1>Harmonic Oscillator<a class="headerlink" href="#harmonic-oscillator" title="Link to this heading">#</a></h1>
+<section id="basic-imports">
+<h2>Basic Imports:<a class="headerlink" href="#basic-imports" title="Link to this heading">#</a></h2>
 <div class="cell tag_hide-output docutils container">
 <div class="cell_input above-output-prompt docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.animation</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">animation</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">IPython.display</span><span class="w"> </span><span class="kn">import</span> <span class="n">HTML</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.signal</span><span class="w"> </span><span class="kn">import</span> <span class="n">find_peaks</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">NamedTuple</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy.fft</span><span class="w"> </span><span class="kn">import</span> <span class="n">fft</span><span class="p">,</span> <span class="n">fftfreq</span><span class="p">,</span> <span class="n">ifft</span><span class="p">,</span> <span class="n">fftshift</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">scipy</span><span class="w"> </span><span class="kn">import</span> <span class="n">signal</span>
 </pre></div>
 </div>
 </div>
-<details class="hide below-input">
+<details class="admonition hide below-input">
 <summary aria-label="Toggle hidden content">
-<span class="collapsed">Show code cell output</span>
-<span class="expanded">Hide code cell output</span>
+<p class="collapsed admonition-title">Show code cell output</p>
+<p class="expanded admonition-title">Hide code cell output</p>
 </summary>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
 <span class="n">Cell</span> <span class="n">In</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">line</span> <span class="mi">2</span>
 <span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
-<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">odeint</span>
+<span class="ne">----&gt; </span><span class="mi">2</span> <span class="kn">from</span><span class="w"> </span><span class="nn">scipy.integrate</span><span class="w"> </span><span class="kn">import</span> <span class="n">solve_ivp</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.patches</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">patches</span>
 
@@ -417,7 +431,15 @@ document.write(`
 </div>
 </details>
 </div>
-<div class="cell tag_hide-output docutils container">
+</section>
+<section id="animation-functions">
+<h2>Animation Functions:<a class="headerlink" href="#animation-functions" title="Link to this heading">#</a></h2>
+<div class="cell tag_hide-output tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_spring</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Draws a spring between (x0, y0) and (x1, y1).&quot;&quot;&quot;</span>
@@ -477,20 +499,22 @@ document.write(`
 </pre></div>
 </div>
 </div>
+</details>
 </div>
-<p>Our goal in this assignment is to understand the Harmonic Oscillator</p>
+<p>Our goal in this assignment is to understand the Harmonic Oscillator.</p>
+</section>
 <section id="exercise-1-a-single-spring">
 <h2>Exercise 1. A Single Spring<a class="headerlink" href="#exercise-1-a-single-spring" title="Link to this heading">#</a></h2>
 <section id="a-simple-harmonic-oscillator">
 <h3>a. Simple Harmonic Oscillator<a class="headerlink" href="#a-simple-harmonic-oscillator" title="Link to this heading">#</a></h3>
-<p>We will be working with a simple Harmonic oscillator in this part.  For the moment, we should think of this as a spring connected to a wall with a mass <span class="math notranslate nohighlight">\(m\)</span> on the end.  We will work with the natural equilibrium length of the spring to be 2 and let the x-coordinate at the equilbrium length to be <span class="math notranslate nohighlight">\(x=0\)</span> (so the deviation from the equilibrium and the x-coordinate match up).  To draw this spring go ahead an plot</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">draw_spring_system</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<p>In this part, we will be working with a simple harmonic oscillator.  For the moment, we should think of this as a spring connected to a wall on one end and to a mass <span class="math notranslate nohighlight">\(m\)</span> on the other.  We choose the natural equilibrium length of the spring to be 2 and let the x-coordinate at the equilbrium length to be <span class="math notranslate nohighlight">\(x=0\)</span> (so the deviation from the equilibrium and the x-coordinate match up).  To draw this spring go ahead an plot</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">draw_spring_system</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>where the 0 represents that it is at <span class="math notranslate nohighlight">\(x=0\)</span>.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
@@ -500,43 +524,45 @@ document.write(`
 \[
 m \ddot{x} = -k x
 \]</div>
-<p>again where <span class="math notranslate nohighlight">\(x\)</span> represents the amount the spring is displaced away from its equilibrium position.</p>
+<p>where <span class="math notranslate nohighlight">\(x\)</span> represents the amount the spring is displaced away from its equilibrium position.</p>
 <p>To solve this with python, it will be convenient to instead write it out as two first-order equations,</p>
 <div class="math notranslate nohighlight">
-\[\begin{split}
-\dot{x} = v \\
-\dot{v} = -\frac{k}{m} x
+\[\begin{split}\begin{align}
+\dot{x} &amp;= v \\
+\dot{v} &amp;= -\frac{k}{m} x
+\end{align}
 \end{split}\]</div>
 <p>where <span class="math notranslate nohighlight">\(v\)</span> is the velocity of the mass.</p>
 <p>These equations can be directly translated into python:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">equations</span><span class="p">(</span><span class="n">state</span><span class="p">,</span><span class="n">t</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">equations</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">state</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">):</span>
   <span class="n">x</span><span class="p">,</span><span class="n">v</span> <span class="o">=</span> <span class="n">state</span>
-  <span class="n">x_dot</span> <span class="o">=</span><span class="n">v</span>
+  <span class="n">x_dot</span> <span class="o">=</span> <span class="n">v</span>
   <span class="n">v_dot</span> <span class="o">=</span> <span class="o">-</span><span class="n">k</span><span class="o">/</span><span class="n">m</span><span class="o">*</span><span class="n">x</span>
   <span class="k">return</span> <span class="p">[</span><span class="n">x_dot</span><span class="p">,</span><span class="n">v_dot</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>We can now get python to solve this differential equation for us.   We need to give it some initial conditions.  For example, we can stretch the spring out to <span class="math notranslate nohighlight">\(x=1\)</span> and set the initial velocity to <span class="math notranslate nohighlight">\(v=0\)</span> by doing</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+<p>We can now get python to solve this differential equation for us.
+First, we need to give it some initial conditions. For example, we can stretch the spring out to <span class="math notranslate nohighlight">\(x=1\)</span> and set the initial velocity to <span class="math notranslate nohighlight">\(v=0\)</span> by writing</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">initial_state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Then we need to specify which times <span class="math notranslate nohighlight">\(t\)</span> we want to evaluate our differential equation with respect to.  Here let’s choose a grid of 400 time points between 0 and <span class="math notranslate nohighlight">\(16\pi\)</span> as</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">16</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+<p>Then we need to specify for which times <span class="math notranslate nohighlight">\(t\)</span> we want to evaluate our differential equation with respect to. Here let’s choose a grid of 400 time points between 0 and <span class="math notranslate nohighlight">\(25\pi\)</span> as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">t</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">25</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">400</span><span class="p">)</span>
 </pre></div>
 </div>
-<p>Finally, we need to pick some values for</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">k</span><span class="o">=</span><span class="mf">1.3</span>
-<span class="n">m</span><span class="o">=</span><span class="mf">2.25</span>
+<p>Finally, we need to pick some values for the parameters</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">k</span> <span class="o">=</span> <span class="mf">1.3</span>
+<span class="n">m</span> <span class="o">=</span> <span class="mf">2.25</span>
 </pre></div>
 </div>
-<p>Now we can solve our differential equation doing</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">odeint</span><span class="p">(</span><span class="n">equations</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,))</span>
-<span class="n">x</span> <span class="o">=</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">v</span><span class="o">=</span> <span class="n">sol</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<p>We can now solve our differential equation with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">equations</span><span class="p">,[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span><span class="n">initial_state</span><span class="p">,</span><span class="n">t_eval</span><span class="o">=</span><span class="n">t</span><span class="p">,</span><span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">k</span><span class="p">,</span><span class="n">m</span><span class="p">,))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 </pre></div>
 </div>
-<p>Go ahead and solve this differential equation and plot it</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<p>Go ahead and solve this differential equation and plot it with</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">)</span> <span class="c1">#&lt;-- This is the important line which plots.</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
 <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;x(t)&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
@@ -544,9 +570,9 @@ m \ddot{x} = -k x
 <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
-<p>Notice that your wave-length <span class="math notranslate nohighlight">\(\lambda = \frac{2\pi}{\omega}\)</span> where the natural frequency <span class="math notranslate nohighlight">\(\omega = \sqrt{k/m}\)</span>.</p>
+<p>Notice that your wave-length <span class="math notranslate nohighlight">\(\lambda = \frac{2\pi}{\omega_0}\)</span> where the natural frequency <span class="math notranslate nohighlight">\(\omega_0 = \sqrt{k/m}\)</span>.</p>
 <p>Also go ahead and plot the velocity. You can plot it separately or if you want to plot it on the same figure so you can match the velocity and time before the <code class="docutils literal notranslate"><span class="pre">plt.show()</span></code> go ahead and do</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>  
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ax2</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>  
 <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>  <span class="c1">#&lt;--- you can turn up the alpha if it&#39;s too dim but I find it annoying to have them both be strong  </span>
 <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;v(t)&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> 
 <span class="n">ax2</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">)</span> 
@@ -554,7 +580,7 @@ m \ddot{x} = -k x
 </div>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
@@ -562,15 +588,14 @@ m \ddot{x} = -k x
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
 <section id="b-computing-the-energy">
 <h3>b.  Computing the energy<a class="headerlink" href="#b-computing-the-energy" title="Link to this heading">#</a></h3>
-<p>We would now like to compute the energy</p>
-<div class="math notranslate nohighlight">
-\[
+<p>Compute the energy
+$<span class="math notranslate nohighlight">\(
 E = \frac{1}{2}mv^2 + \frac{1}{2}kx^2
-\]</div>
-<p>of your system and show that it is constant.  It helps if you keep your y-limit from zero to one - i.e. <code class="docutils literal notranslate"><span class="pre">ax1.set_ylim(0,1)</span></code>.</p>
+\)</span>$</p>
+<p>of your system and show that it is constant. Beware of the plot scale; it helps if you keep your y-limit from zero to one - i.e. <code class="docutils literal notranslate"><span class="pre">ax1.set_ylim(0,1)</span></code>.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (start)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
@@ -578,41 +603,60 @@ E = \frac{1}{2}mv^2 + \frac{1}{2}kx^2
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
 <section id="c-animating-your-spring">
 <h3>c. Animating your spring<a class="headerlink" href="#c-animating-your-spring" title="Link to this heading">#</a></h3>
-<p>We now want to animate your spring.  You can do this by calling</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">animate_spring_system</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<p>Now animate your spring.  You can do this by calling</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">animate_spring_system</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>on your x-coordinate.</p>
+<p>In some cases throughout this notebook, animating might take an annoying while. So instead, you may animate with a lower “frame rate” by calling this function on <code class="docutils literal notranslate"><span class="pre">x[0::2]</span></code>, for example, which samples every 2 elements of <span class="math notranslate nohighlight">\(x\)</span>.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
 </div>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
-<section id="d-a-under-damped-harmonic-oscillator">
-<h3>d.  A (under) damped Harmonic Oscillator<a class="headerlink" href="#d-a-under-damped-harmonic-oscillator" title="Link to this heading">#</a></h3>
-<p>Now let’s go ahead and introduce some damping.  The equation of motion for a damped harmonic oscillator is</p>
+<section id="d-an-underdamped-harmonic-oscillator">
+<h3>d.  An underdamped Harmonic Oscillator<a class="headerlink" href="#d-an-underdamped-harmonic-oscillator" title="Link to this heading">#</a></h3>
+<p>Now let’s introduce some damping. The equation of motion for a damped harmonic oscillator is</p>
 <div class="math notranslate nohighlight">
 \[
 m \ddot{x} = -k x - c v 
 \]</div>
-<p>Rewrite this out as a series of first-order differential equations and then modify your <code class="docutils literal notranslate"><span class="pre">equations(state,t,x,k,m,c)</span></code> function to solve this differential equation using the same starting conditions and values for <span class="math notranslate nohighlight">\(k\)</span> amd <span class="math notranslate nohighlight">\(m\)</span> as earlier. Start by using <span class="math notranslate nohighlight">\(c=0.2\)</span>.   Recall that the dissipation <span class="math notranslate nohighlight">\(\gamma=c/(2m\omega)\)</span>.  Since <span class="math notranslate nohighlight">\(\gamma&lt;1\)</span> this is the underdamped case.</p>
-<p>Plot the position and velocity as a function of time.  Also animate your spring.</p>
+<p>Rewrite this as a series of first-order differential equations and modify your <code class="docutils literal notranslate"><span class="pre">equations(state,t,x,k,m,c)</span></code> function to solve this differential equation using the same starting conditions and values for <span class="math notranslate nohighlight">\(k\)</span> amd <span class="math notranslate nohighlight">\(m\)</span> as earlier. Start by using <span class="math notranslate nohighlight">\(c=0.2\)</span>. Recall that the dissipation <span class="math notranslate nohighlight">\(\gamma=c/(2m\omega_0)\)</span>, and <span class="math notranslate nohighlight">\(\omega_0 = \sqrt{k/m}\)</span> is the undamped frequency. When <span class="math notranslate nohighlight">\(\gamma&lt;1\)</span>, as is this case, we have an underdamped oscillator.</p>
+<p>Plot the position and velocity as a function of time. Also animate your spring.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
 </div>
- <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>We would like to now check two things explicitly about the damped oscillator:</p>
-<p>We expect that the wave-length of the damped oscillator should be <span class="math notranslate nohighlight">\(2\pi/\omega_d\)</span> where <span class="math notranslate nohighlight">\(\omega_d \equiv \omega_n \sqrt{1-\gamma^2}\)</span>.  How much different is this from the natural frequency.   Verify this by extracting the peak locations of the undamped oscillator.  To do this we can use <code class="docutils literal notranslate"><span class="pre">my_peaks=find_peaks(x)[0].tolist()</span></code> and then use <code class="docutils literal notranslate"><span class="pre">t[my_peaks]</span></code> to get the time of the respective peaks.  Check that those times are all equidistance and that they happen at the prescribed wave-length.  The answer you will actually get if you do this will be reasonable but not super-accurate.  You can do better by (a) increasing the number of points in your <code class="docutils literal notranslate"><span class="pre">linspace</span></code> to 4000 (but don’t rerun the animation becuase it will be very slow) and/or instead of using the difference in time between two peaks computing the slope <code class="docutils literal notranslate"><span class="pre">np.polyfit(range(0,len(peaks)),t[peaks],1)</span></code> and getting the slope.</p>
-<p>Verify that the damped oscillator’s strength decays exponentially.  We can do this by looking at the peak values (<code class="docutils literal notranslate"><span class="pre">x[my_peaks]</span></code>) and plot them.  To tell that something decreases exponentially, you should plot it on a semi-log scale (<code class="docutils literal notranslate"><span class="pre">ax1.set_yscale('log')</span></code>) and see that the plot is linear.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now, we would like to check two things explicitly about the damped oscillator:</p>
+<ol class="arabic">
+<li><p>We expect that the period of the damped oscillator should be <span class="math notranslate nohighlight">\(2\pi/\omega_d\)</span> where <span class="math notranslate nohighlight">\(\omega_d \equiv \omega_0 \sqrt{1-\gamma^2}\)</span> and <span class="math notranslate nohighlight">\(\gamma = c/(2m\omega_0)\)</span>. Verify this by extracting the peak locations of the undamped oscillator.</p>
+<p>To do this, we can use <code class="docutils literal notranslate"><span class="pre">my_peaks=find_peaks(x)[0].tolist()</span></code> and then use <code class="docutils literal notranslate"><span class="pre">t[my_peaks]</span></code> to get the time of the respective peaks. Check that those times are all equidistant and that they happen with the prescribed period. The answer you will actually get if you do this will be reasonable but not super-accurate. You can do better by (a) increasing the number of points in your <code class="docutils literal notranslate"><span class="pre">linspace</span></code> to 4000 (but don’t rerun the animation becuase it will be very slow) and/or instead of using the difference in time between two peaks, computing the slope of peaks <em>x</em> time elapsed using <code class="docutils literal notranslate"><span class="pre">np.polyfit(range(0,len(my_peaks)),t[my_peaks],1)</span></code>.</p>
+</li>
+<li><p>Finally, verify that the damped oscillator’s strength decays exponentially. We can do this by looking at the peak values (<code class="docutils literal notranslate"><span class="pre">x[my_peaks]</span></code>) and plot them. To tell that something decreases exponentially, you should plot it on a semi-log scale (<code class="docutils literal notranslate"><span class="pre">ax1.set_yscale('log')</span></code>) and see that the plot is linear.</p></li>
+</ol>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
@@ -620,33 +664,385 @@ m \ddot{x} = -k x - c v
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
 <section id="e-an-overdamped-oscillator">
 <h3>e.  An overdamped oscillator<a class="headerlink" href="#e-an-overdamped-oscillator" title="Link to this heading">#</a></h3>
-<p>Let’s do the same thing but this time choose a value of <span class="math notranslate nohighlight">\(c\)</span> where <span class="math notranslate nohighlight">\(\gamma &gt;1\)</span> and hence it is overdamped. Then consider some value where <span class="math notranslate nohighlight">\(\gamma \gg 1\)</span>.  For both scenarios plot the position and velocity vs time and animate them.</p>
+<p>Now we turn to the overdamped oscillator. Find <span class="math notranslate nohighlight">\(c\)</span> that gives <span class="math notranslate nohighlight">\(\gamma=1.2\)</span> and solve the corresponding ODE. Then consider some value where <span class="math notranslate nohighlight">\(\gamma \gg 1\)</span>.  For both scenarios plot the position and velocity vs time and animate them.</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
 </div>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
-<section id="e-gravity">
-<h3>e. Gravity<a class="headerlink" href="#e-gravity" title="Link to this heading">#</a></h3>
-<p>We would now like you to modify your equations of motion to include both the force from gravity and a dissapation term.  By running your simulation, compute the equilibrium value for masses <code class="docutils literal notranslate"><span class="pre">masses=[1.0,2.0,3.0,4.0]</span></code>.  Then plot the equilibrium spring location versus the mass and show that the equilbrium position is linear with the mass.  How could you then use this information as a scale?</p>
+<section id="f-gravity">
+<h3>f. Gravity<a class="headerlink" href="#f-gravity" title="Link to this heading">#</a></h3>
+<p>Now suppose you turn your system vertically in such a way that gravity acts as a constant force on your oscillator.
+Modify your equations of motion to include both the force from gravity and a dissipation term.</p>
+<p>By running your simulation, compute the equilibrium value for masses <code class="docutils literal notranslate"><span class="pre">masses=[1.0,2.0,3.0,4.0]</span></code>.
+Then plot the equilibrium spring location versus the mass and show that the equilbrium position is linear with the mass.  You may find the equilibrium simply by averaging the position, but be sure to disregard any transient effects.</p>
+<p>How could you then use this information as a scale?</p>
+<p>For concreteness, you may use <span class="math notranslate nohighlight">\(g=10,k=1.3,c=0.2\)</span>, but that should make no qualitative difference. In fact, your choice of <span class="math notranslate nohighlight">\(c\)</span> should make no quantitative difference (why?).</p>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">### ANSWER HERE</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Using this information, by calculating the equilibrium position we immediately determine the mass. So we have a scale.</p>
+</section>
+</section>
+<section id="exercise-2-two-springs">
+<h2>Exercise 2. Two springs<a class="headerlink" href="#exercise-2-two-springs" title="Link to this heading">#</a></h2>
+<p>In this assignment, we are going to work on the simple Harmonic oscillator for two springs.  We will be using slightly different animation and spring-drawing functions in this assignment.</p>
+<div class="cell tag_hide-cell docutils container">
+<details class="admonition hide above-input">
+<summary aria-label="Toggle hidden content">
+<p class="collapsed admonition-title">Show code cell content</p>
+<p class="expanded admonition-title">Hide code cell content</p>
+</summary>
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">draw_spring</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Draws a spring between (x0, y0) and (x1, y1).&quot;&quot;&quot;</span>
+    <span class="n">num_points</span><span class="o">=</span><span class="mi">500</span>
+
+    <span class="n">dx</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span>
+    <span class="n">dy</span> <span class="o">=</span> <span class="n">y1</span> <span class="o">-</span> <span class="n">y0</span>
+    <span class="n">length</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">dx</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">dy</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">)</span>
+
+    <span class="n">x_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+    <span class="n">y_line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">y0</span><span class="p">,</span> <span class="n">y1</span><span class="p">,</span> <span class="n">num_points</span><span class="p">)</span>
+
+    <span class="n">coil_x</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">coils</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+    <span class="n">coil_y</span> <span class="o">=</span> <span class="n">amplitude</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">coils</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="n">num_points</span><span class="p">))</span>
+
+    <span class="n">x_spring</span> <span class="o">=</span> <span class="n">x_line</span> <span class="o">+</span> <span class="n">coil_x</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">y_spring</span> <span class="o">=</span> <span class="n">y_line</span> <span class="o">+</span> <span class="n">coil_y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x_spring</span><span class="p">,</span> <span class="n">y_spring</span>  <span class="c1"># Return the spring coordinates</span>
+
+
+<span class="c1"># Animation setup</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">SetupAnimation</span><span class="p">():</span>
+    <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span><span class="mf">0.0</span><span class="p">],[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span><span class="mf">0.25</span><span class="p">],</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">line</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>  <span class="c1"># Initialize an empty line object</span>
+    <span class="n">line2</span><span class="p">,</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">([],</span> <span class="p">[],</span> <span class="n">lw</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span>  <span class="c1"># Initialize an empty line object</span>
+
+    <span class="n">center_x</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">center_y</span><span class="o">=</span><span class="mi">0</span>
+    <span class="n">radius</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+    <span class="n">circle</span> <span class="o">=</span> <span class="n">patches</span><span class="o">.</span><span class="n">Circle</span><span class="p">((</span><span class="n">center_x</span><span class="p">,</span> <span class="n">center_y</span><span class="p">),</span> <span class="n">radius</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">add_artist</span><span class="p">(</span><span class="n">circle</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">6</span><span class="p">,</span> <span class="mi">45</span><span class="p">)</span> <span class="c1"># Set appropriate limits for x</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>    <span class="c1"># Set appropriate limits for y. Adjust as needed.</span>
+    <span class="c1">#ax.set_aspect(&#39;equal&#39;) # Important for proper spring visualization</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Spring Animation&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">circle</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">animate</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">Y_t</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="n">circle</span><span class="p">,</span> <span class="n">L</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+    <span class="n">x1</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>  <span class="c1"># x-coordinate changes over time</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">draw_spring</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">+</span> <span class="n">L</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span> 
+    <span class="n">line</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+    <span class="n">xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">draw_spring</span><span class="p">(</span><span class="n">x1</span> <span class="o">+</span> <span class="n">L</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">Y_t</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">L</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="n">coils</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">amplitude</span><span class="o">=</span><span class="mf">0.10</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">)</span> 
+    <span class="n">line2</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">)</span>
+    <span class="n">new_x</span> <span class="o">=</span> <span class="n">x1</span>  
+    <span class="n">circle</span><span class="o">.</span><span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">new_x</span> <span class="o">+</span> <span class="n">L</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> 
+    <span class="k">return</span> <span class="n">line</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">circle</span>
+</pre></div>
+</div>
+</div>
+</details>
+</div>
+<section id="a-equation-of-motion-for-forced-displacement">
+<h3>a.  Equation of motion for forced displacement<a class="headerlink" href="#a-equation-of-motion-for-forced-displacement" title="Link to this heading">#</a></h3>
+<p>Let us consider the scenario where we have two springs with springs constants <span class="math notranslate nohighlight">\(k_1\)</span> (left) and <span class="math notranslate nohighlight">\(k_2\)</span> (right) connected to a mass <span class="math notranslate nohighlight">\(m\)</span> between them.  The left spring is fixed to a wall and the right spring is displaced by a function <span class="math notranslate nohighlight">\(y(t)\)</span>.  The equation of motion for such a setup is</p>
+<div class="math notranslate nohighlight">
+\[ 
+m \frac{d^2 x}{dt^2} + (k_1+k_2)x = k_2 y(t) \tag{1}
+\]</div>
+<p>Recall that the natural frequency of this system is <span class="math notranslate nohighlight">\(\omega_0 = \sqrt{\frac{k_1+k_2}{m}}\)</span>.
+In this exercise, let’s generically use a displacement</p>
+<div class="math notranslate nohighlight">
+\[
+y(t) = Y_0 \cos(\omega t)
+\]</div>
+<p>There will be many quantities being used in this exercise, so we choose to condense the relevant parameters by defining the following classes:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">class</span><span class="w"> </span><span class="nc">DisplaceParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;A docstring&quot;&quot;&quot;</span>
+  <span class="n">Y0</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">omega</span><span class="p">:</span> <span class="nb">float</span> 
+  <span class="n">phi</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+
+<span class="k">class</span><span class="w"> </span><span class="nc">SHOParams</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot;A docstring&quot;&quot;&quot;</span>
+  <span class="n">k1</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">m</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">k2</span><span class="p">:</span> <span class="nb">float</span>
+  <span class="n">D</span><span class="p">:</span> <span class="n">DisplaceParams</span>
+  <span class="n">c</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.0</span>
+  <span class="n">initial_state</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>The parameters can be set up as</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">params</span> <span class="o">=</span> <span class="n">SHOParams</span><span class="p">(</span><span class="n">k1</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">k2</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">D</span><span class="o">=</span><span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="mf">0.25</span><span class="o">*</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">),</span> <span class="n">initial_state</span><span class="o">=</span><span class="p">[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>which corrresponds to</p>
+<ul class="simple">
+<li><p><span class="math notranslate nohighlight">\(k1=k2=1.0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(m=1.0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(Y_0 = 4.0\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(L=0.1\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\( \omega = 0.25 (2\pi) \approx \omega_0+0.15\)</span></p></li>
+<li><p>initial state of <span class="math notranslate nohighlight">\(x=1\)</span> and <span class="math notranslate nohighlight">\(v=1\)</span></p></li>
+</ul>
+<p>They can be accessed like <code class="docutils literal notranslate"><span class="pre">params.k2</span></code> or <code class="docutils literal notranslate"><span class="pre">params.D.Y0</span></code></p>
+<p>Turn our second order differential equation (1) into a system of coupled first order differential equations in <span class="math notranslate nohighlight">\((x,v)\)</span> and write a function <code class="docutils literal notranslate"><span class="pre">equations(t,state,params)</span></code> which takes a time <code class="docutils literal notranslate"><span class="pre">t</span></code>, a <span class="math notranslate nohighlight">\((x,v)\)</span> pair <code class="docutils literal notranslate"><span class="pre">state</span></code> and a <code class="docutils literal notranslate"><span class="pre">SHOParams</span></code> type object <code class="docutils literal notranslate"><span class="pre">params</span></code>, then returns <span class="math notranslate nohighlight">\(\dot{x}\)</span> and <span class="math notranslate nohighlight">\(\dot{v}\)</span>.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Once you’ve produced this function you can go ahead and numerically compute the solution of the differential equation using</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sol</span> <span class="o">=</span> <span class="n">solve_ivp</span><span class="p">(</span><span class="n">equations</span><span class="p">,</span> <span class="p">[</span><span class="n">t</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">params</span><span class="o">.</span><span class="n">initial_state</span><span class="p">,</span> <span class="n">t_eval</span><span class="o">=</span><span class="n">t</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">params</span><span class="p">,))</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">y</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>and plot both <span class="math notranslate nohighlight">\(x(t)\)</span> and <span class="math notranslate nohighlight">\(Y(t)\)</span> against <span class="math notranslate nohighlight">\(t\)</span> for times <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">np.linspace(0,</span> <span class="pre">100,</span> <span class="pre">400)</span></code>.</p>
+<p>In order to do this, it will be useful to write a function</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span><span class="w"> </span><span class="nf">getDisplacement</span><span class="p">(</span><span class="n">displaceParams</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+   <span class="c1">### do stuff</span>
+   <span class="k">return</span> <span class="n">Y_t</span>
+</pre></div>
+</div>
+<p>to easily access the displacement <span class="math notranslate nohighlight">\(y(t)\)</span>.</p>
+<p>To plot them both on the same axis you can then use</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;x(t)&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;blue&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">GetDisplacement</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">D</span><span class="p">,</span> <span class="n">t</span><span class="p">),</span><span class="n">zorder</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;y(t)&#39;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;red&#39;</span><span class="p">,</span><span class="n">alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;t&quot;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;x(t)&quot;</span><span class="p">,</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">ax1</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You should see some clear beating going on due to being near but not exactly on resonance.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now go ahead and animate this system using</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">line</span><span class="p">,</span> <span class="n">line2</span><span class="p">,</span> <span class="n">circle</span> <span class="o">=</span> <span class="n">SetupAnimation</span><span class="p">()</span>
+<span class="n">ani</span> <span class="o">=</span> <span class="n">animation</span><span class="o">.</span><span class="n">FuncAnimation</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">animate</span><span class="p">,</span> <span class="n">frames</span><span class="o">=</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">fargs</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Y_t</span><span class="p">,</span><span class="n">line</span><span class="p">,</span><span class="n">line2</span><span class="p">,</span><span class="n">circle</span><span class="p">,</span><span class="mi">20</span><span class="p">),</span> <span class="n">blit</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">interval</span><span class="o">=</span><span class="mi">40</span><span class="p">,</span> <span class="n">repeat</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>  <span class="c1"># Pass parameters using fargs</span>
+<span class="n">display</span><span class="p">(</span><span class="n">HTML</span><span class="p">(</span><span class="n">ani</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">()))</span>  
+<span class="n">plt</span><span class="o">.</span><span class="n">close</span><span class="p">()</span> 
+</pre></div>
+</div>
+<p>To get the parameter <code class="docutils literal notranslate"><span class="pre">Y_t</span></code> you will need to call <code class="docutils literal notranslate"><span class="pre">Y_t=GetDisplacement(params.D,t)</span></code> from above.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Finally, it’s interesting to consider tuning your system exactly to resonance.</p>
+<p>Let <span class="math notranslate nohighlight">\(\omega=\omega_0\)</span>, where <span class="math notranslate nohighlight">\(\omega_0\)</span> is the natural frequency defined as <span class="math notranslate nohighlight">\(\omega_0=\sqrt{(k_1+k_2)/m}\)</span>.</p>
+<p>Plot <span class="math notranslate nohighlight">\(x(t)\)</span> over time <span class="math notranslate nohighlight">\(t\)</span> for times <code class="docutils literal notranslate"><span class="pre">t</span> <span class="pre">=</span> <span class="pre">np.linspace(0,</span> <span class="pre">100,</span> <span class="pre">400)</span></code>.   Here you should see the oscillations simply get larger and larger over time.</p>
+<p>In addition to generating this plot, let’s try to figure out how large <span class="math notranslate nohighlight">\(x(t)\)</span> gets for various values of <span class="math notranslate nohighlight">\(\omega\)</span>.  Loop over all values of <span class="math notranslate nohighlight">\(\omega\)</span> in  <code class="docutils literal notranslate"><span class="pre">omegas=np.linspace(0.1,2,100)</span></code> and plot the largest value of <span class="math notranslate nohighlight">\(x(t)\)</span> as a function of <span class="math notranslate nohighlight">\(\omega\)</span>.  To replace <span class="math notranslate nohighlight">\(\omega\)</span> in your parameters you can do</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">new_params</span><span class="o">=</span><span class="n">params</span><span class="o">.</span><span class="n">_replace</span><span class="p">(</span><span class="n">D</span><span class="o">=</span><span class="n">DisplaceParams</span><span class="p">(</span><span class="n">Y0</span><span class="o">=</span><span class="mf">4.0</span><span class="p">,</span> <span class="n">omega</span><span class="o">=</span><span class="n">omega</span><span class="p">))</span>
+</pre></div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
 </pre></div>
 </div>
 </div>
 </div>
  <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div></section>
+<section id="b-damping">
+<h3>b.  Damping<a class="headerlink" href="#b-damping" title="Link to this heading">#</a></h3>
+<p>Our previous system was doing something unreasonable particularly as our driving frequency approached the natural frequency.  This is partially because there was no damping in the system.  Here, we will now introduce some damping into our system.   The new equations of motion will be</p>
+<div class="math notranslate nohighlight">
+\[ 
+m \frac{d^2 x}{dt^2} +cv + (k_1+k_2)x = k_2 Y_0 \cos(\omega t)
+\]</div>
+<p>Modify  <code class="docutils literal notranslate"><span class="pre">equations(state,t,k1,k2,m,Y0,omega,c)</span></code> to solve the differential equations for this system.  Then apply it to
+<code class="docutils literal notranslate"><span class="pre">params</span> <span class="pre">=</span> <span class="pre">SHOParams(k1=1.0,</span> <span class="pre">m=1.0,</span> <span class="pre">k2=1.0,</span> <span class="pre">c=0.5,</span> <span class="pre">D=DisplaceParams(Y0=4.0,</span> <span class="pre">omega=0.25*2*np.pi),</span> <span class="pre">initial_state=[1.0,</span> <span class="pre">1.0])</span></code></p>
+<p>Plot <span class="math notranslate nohighlight">\(x(t)\)</span> and the forcing <span class="math notranslate nohighlight">\(y(t)\)</span>, then animate this system out to a time of <span class="math notranslate nohighlight">\(t=20\)</span>.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now go ahead and plot the maximum <span class="math notranslate nohighlight">\(x(t)\)</span> versus <span class="math notranslate nohighlight">\(\omega\)</span>.  You should see that the damping now prevents the maximum height you reach from diverging.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>While not required for credit, it is interesting to change the relevant parameters above and put it into the stiffness controlled regime (<span class="math notranslate nohighlight">\(c \gg m\)</span>) and the mass controlled regime (<span class="math notranslate nohighlight">\(m \gg c\)</span>).</p>
+</section>
+<section id="c-green-s-function-g-omega">
+<h3>c. Green’s Function <span class="math notranslate nohighlight">\(G(\omega)\)</span><a class="headerlink" href="#c-green-s-function-g-omega" title="Link to this heading">#</a></h3>
+<p>We have learned in class that the general solution of a damped driven harmonic oscillator with forcing of the form</p>
+<div class="math notranslate nohighlight">
+\[
+Y= Y_0 \cos(\omega t+\phi)
+\]</div>
+<p>after an initial transient is given by</p>
+<div class="math notranslate nohighlight">
+\[
+x(t) = Y_0 |\tilde{G}(\omega)| \cos(\omega t + \phi + \textrm{angle}(\tilde{G}(\omega)))
+\]</div>
+<p>where the Green’s function</p>
+<div class="math notranslate nohighlight">
+\[
+\tilde{G}(\omega) \equiv \frac{1}{k} \frac{1}{\left[1- \left(\frac{\omega}{\omega_0} \right)^2 + 2i \gamma \left(\frac{\omega}{\omega_0} \right) \right]}
+\]</div>
+<p>with</p>
+<div class="math notranslate nohighlight">
+\[
+\gamma = \frac{c}{2m\omega_0}
+\]</div>
+<p>Write a function <code class="docutils literal notranslate"><span class="pre">G(omega,k,omega_0,gamma)</span></code> which computes <span class="math notranslate nohighlight">\(\tilde{G}(\omega)\)</span>.</p>
+<p>Then use it to plot the steady state of <span class="math notranslate nohighlight">\(x(t)\)</span> the driven damped oscillator above on top of the exact solution as a function of time.   You expect to find that the transient roughly ends within an order of magnitude of <span class="math notranslate nohighlight">\(2m/c\)</span>.   Plot a vertical line there on your plot - i.e. <code class="docutils literal notranslate"><span class="pre">plt.axvline(2m/c)</span></code>.</p>
+<p>Notice that the non-transient values of <span class="math notranslate nohighlight">\(x(t)\)</span> do not depend on the initial conditions in any way - i.e. it doesn’t show up in the formula at all.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>It is also interesting to look at <span class="math notranslate nohighlight">\(\tilde{G}(\omega)\)</span> as a function of <span class="math notranslate nohighlight">\(\omega/\omega_n\)</span>.  Go ahead and make this plot both for <span class="math notranslate nohighlight">\(|\tilde{G}(\omega)|\)</span> and <span class="math notranslate nohighlight">\(-\textrm{angle}[\tilde{G}(\omega)]\)</span> for <span class="math notranslate nohighlight">\(\omega\)</span> between 0 and 5.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now investigate what happens as <span class="math notranslate nohighlight">\(c\to 0\)</span>. Redo the previous plot with <span class="math notranslate nohighlight">\(c=0.001\)</span>. It might be helpful to plot <span class="math notranslate nohighlight">\(-\textrm{angle}[\tilde{G}(\omega)]\)</span> separately, so you can see its features clearly.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>From their behavior, you should be able to tell that the magnitude of <span class="math notranslate nohighlight">\(G\)</span> is (proportional to) the derivative of the angle of <span class="math notranslate nohighlight">\(G\)</span>. As the derivative blows up, the undifferentiated function – here the angle – approaches a discontinuity! Although continuity is predominant in physics, and we’re often taught to disregard discontinuities as pathologies, this exact behavior happens in many places and is behind many interesting and deep phenomena such as <a class="reference external" href="https://en.wikipedia.org/wiki/Lee%E2%80%93Yang_theory">phase transitions</a> and <a class="reference external" href="https://en.wikipedia.org/wiki/Shock_wave">shock waves</a>.</p>
+</section>
+<section id="d-power-flow-in-the-steady-state">
+<h3>d.  Power Flow in the Steady State<a class="headerlink" href="#d-power-flow-in-the-steady-state" title="Link to this heading">#</a></h3>
+<p>We are interested in solving for the power flow in the steady state. The power dissipated should go as</p>
+<div class="math notranslate nohighlight">
+\[
+P_\textrm{out} = cv^2 
+\]</div>
+<p>over a single cycle.</p>
+<p>The power input goes as</p>
+<div class="math notranslate nohighlight">
+\[
+P_\textrm{in} =  Fv 
+\]</div>
+<p>Using the same parameters as before, except now with <span class="math notranslate nohighlight">\(c=1\)</span>, plot both the input and output power as a function of time using <code class="docutils literal notranslate"><span class="pre">t=np.linspace(0,</span> <span class="pre">20,</span> <span class="pre">20000)</span></code>.</p>
+<p>Also, this is a good place to play with the <span class="math notranslate nohighlight">\(c\)</span> parameter and see and try to understand what is happening. Increase the range of <span class="math notranslate nohighlight">\(t\)</span> if you feel you need to.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><p>Now, we would like to evaluate the average power dissipated and put into the system. We want to average the power over one or an integer number of cycles.</p>
+<p>For the paramaters above, we can get the index of an integer number of periods by doing</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">find_peaks</span><span class="p">(</span><span class="o">-</span><span class="n">getDisplacement</span><span class="p">(</span><span class="n">params</span><span class="o">.</span><span class="n">D</span><span class="p">,</span><span class="n">t</span><span class="p">))[</span><span class="mi">0</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Go ahead and evaluate the average of the power over these times.  You can then compare it to the analytical formula</p>
+<div class="math notranslate nohighlight">
+\[
+\overline{P}=\frac{c\omega^2 Y_0^2 G^2}{2}
+\]</div>
+<p>You should find that all three of these terms agree to 2-3 digits.</p>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsStart.svg" width=200 align=left alt="Answer (end)"></img><br></div><div class="cell tag_answer-cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">###ANSWER HERE</span>
+</pre></div>
+</div>
+</div>
+</div>
+ <div><img src="https://clark.physics.illinois.edu/246img/AnsEnd.svg" width=200 align=left alt="Answer (end)"></img><br></div><hr class="docutils" />
+<p><strong>Acknowledgements:</strong></p>
+<ul class="simple">
+<li><p>Bryan Clark (original)</p></li>
+</ul>
+</section>
 </section>
 </section>
 
@@ -714,13 +1110,22 @@ m \ddot{x} = -k x - c v
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#basic-imports">Basic Imports:</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#animation-functions">Animation Functions:</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-1-a-single-spring">Exercise 1. A Single Spring</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-simple-harmonic-oscillator">a. Simple Harmonic Oscillator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-computing-the-energy">b.  Computing the energy</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-animating-your-spring">c. Animating your spring</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-a-under-damped-harmonic-oscillator">d.  A (under) damped Harmonic Oscillator</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-an-underdamped-harmonic-oscillator">d.  An underdamped Harmonic Oscillator</a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-an-overdamped-oscillator">e.  An overdamped oscillator</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#e-gravity">e. Gravity</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#f-gravity">f. Gravity</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#exercise-2-two-springs">Exercise 2. Two springs</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#a-equation-of-motion-for-forced-displacement">a.  Equation of motion for forced displacement</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#b-damping">b.  Damping</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#c-green-s-function-g-omega">c. Green’s Function <span class="math notranslate nohighlight">\(G(\omega)\)</span></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#d-power-flow-in-the-steady-state">d.  Power Flow in the Steady State</a></li>
 </ul>
 </li>
 </ul>
